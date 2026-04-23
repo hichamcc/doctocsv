@@ -19,6 +19,8 @@ class CreateNewUser implements CreatesNewUsers
 
     public function create(array $input): User
     {
+        abort_unless(auth()->check(), 403);
+
         Validator::make($input, [
             ...$this->profileRules(),
             'password' => $this->passwordRules(),

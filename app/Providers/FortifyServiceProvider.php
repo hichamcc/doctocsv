@@ -24,7 +24,13 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
         Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
-        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::registerView(function () {
+            if (auth()->guest()) {
+                abort(403);
+            }
+            return view('auth.register');
+        });
+
         Fortify::resetPasswordView(fn () => view('auth.reset-password'));
         Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
 
